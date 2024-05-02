@@ -1,8 +1,88 @@
-@model TModel
+@model MyTask
 
 @{
-    ViewBag.Title = "title";
+    ViewBag.Title = "Task";
     Layout = "_Layout";
 }
 
-<h2>title</h2>
+<div class="container-lg border border-2">
+    <div class="row row-cols-2 mt-4">
+        <div class="col col-12">
+            <h2>@Model.Name</h2>
+        </div>
+        <div class="col col-5">
+            <div class="row row-cols-2">
+                <div class="col col-6 pb-5 border border-2">
+                    <h5 class="mt-4">Имя исполнителя</h5>
+                    <h5 class="mt-4">Статус</h5>
+                    <h5 class="mt-4">Приоритет</h5>
+                    <h5 class="mt-4">Номер</h5>
+                    <h5 class="mt-4">Дата создания</h5>
+                    @if (!Model.Status.Equals("Новая"))
+                    {
+                        <h5 class="mt-4">Дата
+                            @if (Model.Status.Equals("Закрыта"))
+                            {
+                                <span>закрытия</span>
+                            }
+                            else if (Model.Status.Equals("Открыта"))
+                            {
+                                <span>открытия</span>
+                            }
+                        </h5>
+                    }
+                </div>
+                <div class="col col-6 pb-5 border border-2">
+                    <h5 class="mt-4">@Model.ExecutorName</h5>
+                    <h5 class="mt-4">@Model.Status</h5>
+                    <h5 class="mt-4 @PriorityColor(@Model.Priority)">@Model.Priority</h5>
+                    <h5 class="mt-4">@Model.Id</h5>
+                    <h5 class="mt-4">@Model.DateOfCreation</h5>
+                    @if (!Model.Status.Equals("Новая"))
+                    {
+                        <h5 class="mt-4">
+                            @if (Model.Status.Equals("Закрыта"))
+                            {
+                                <span>@Model.DateOfClosing</span>
+                            }
+                            else if (Model.Status.Equals("Открыта"))
+                            {
+                                <span>@Model.DateOfOpening</span>
+                            }
+                            else
+                            {
+                                <span>@Model.DateOfCreation</span>
+                            }
+                        </h5>
+                    }
+                </div>
+                <div class="col col-12 py-5 border border-2">
+                    @if (Model.Status.Equals("Новая")) { <a asp-controller="MyTask" asp-action="Open" asp-route-id="@Model.Id" type="button" class="btn btn-success rounded-0 px-3 py-2 ">Открыть</a> }
+                    else if (Model.Status.Equals("Открыта")) { <a asp-controller="MyTask" asp-action="Close" asp-route-id="@Model.Id" type="button" class="btn btn-primary rounded-0 px-3 py-2 ">Закрыть</a> }
+                    @if(!Model.Status.Equals("Открыта")){ <a asp-controller="MyTask" asp-action="Delete" asp-route-id="@Model.Id" type="button" class="btn btn-danger rounded-0 px-3 py-2 ">Удалить</a> }
+                </div>
+            </div>
+        </div>
+        <div class="col col-7 pt-4 border border-2">
+            <h3 class="mt-1">Описание задачи</h3>
+            <p class="fs-2">@Model.Description</p>
+        </div>
+    </div>
+</div>
+
+@functions{
+    public string PriorityColor(string priority)
+    {
+        switch (priority)
+        {
+            case "Высокий":
+                return "text-danger";
+            case "Средний":
+                return "text-primary";
+            case "Низкий":
+                return "text-success";
+            default:
+                return "";
+        }
+    }
+}
