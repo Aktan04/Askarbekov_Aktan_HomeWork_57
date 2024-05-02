@@ -1,8 +1,171 @@
-@model TModel
+@model TaskIndexViewModel
 
 @{
-    ViewBag.Title = "title";
+    ViewBag.Title = "Tasks";
     Layout = "_Layout";
 }
 
 <h2>title</h2>
+
+<div class="row table_section">
+    <form asp-action="Index" method="get" class="mb-4">
+        <div class="row">
+            <div class="col-md-3 mb-2">
+                <label for="titleSearch" class="form-label">Заголовок:</label>
+                <input type="text" id="titleSearch" name="titleSearch" class="form-control" placeholder="Поиск по заголовку">
+            </div>
+            <div class="col-md-3 mb-2">
+                <label for="dateFrom" class="form-label">Дата создания от:</label>
+                <input type="date" id="dateFrom" name="dateFrom" class="form-control">
+            </div>
+            <div class="col-md-3 mb-2">
+                <label for="dateTo" class="form-label">Дата создания до:</label>
+                <input type="date" id="dateTo" name="dateTo" class="form-control">
+            </div>
+            <div class="col-md-3 mb-2">
+                <label for="wordFilter" class="form-label">Фильтр по словам:</label>
+                <input type="text" id="wordFilter" name="wordFilter" class="form-control" placeholder="Поиск по описанию">
+            </div>
+            <div class="col-md-4 mb-2">
+                <label for="priority" class="form-label">Приоритет</label>
+                <select id="priority" name="priority" class="form-select">
+                    <option value="">Все приоритеты</option>
+                    @foreach (var priority in ViewBag.Priorities)
+                    {
+                        <option value="@priority">@priority</option>
+                    }
+                </select>
+            </div>
+            
+            <div class="col-md-4 mb-2">
+                <label for="status" class="form-label">Статус</label>
+                <select id="status" name="status" class="form-select">
+                    <option value="">Все статусы</option>
+                    @foreach (var statuses in ViewBag.Statuses)
+                    {
+                        <option value="@statuses">@statuses</option>
+                    }
+                </select>
+            </div>
+            
+            <div class="col-md-3 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary my-2">Применить фильтр</button>
+            </div>
+        </div>
+    </form>
+    @if (@Model.Tasks.Count() == 0)
+    {
+        <p>Пока что, задач еще нет!</p>
+    }
+    else
+    {
+        <table class="table table-light table-striped">
+            <thead>
+            <tr>
+                <th>Номер</th>
+                <th><a asp-action="Index"
+                       asp-route-sortState="@ViewBag.NameSort"
+                       asp-route-priority="@ViewBag.Priority"
+                       asp-route-status="@ViewBag.Status"
+                       asp-route-titleSearch="@ViewBag.TitleSearch"
+                       asp-route-dateFrom="@ViewBag.DateFrom"
+                       asp-route-dateTo="@ViewBag.DateTo"
+                       asp-route-wordFilter="@ViewBag.WordFilter">Название задачи</a></th>
+                <th><a asp-action="Index" 
+                       asp-route-sortState="@ViewBag.PrioritySort"
+                       asp-route-priority="@ViewBag.Priority"
+                       asp-route-status="@ViewBag.Status"
+                       asp-route-titleSearch="@ViewBag.TitleSearch"
+                       asp-route-dateFrom="@ViewBag.DateFrom"
+                       asp-route-dateTo="@ViewBag.DateTo"
+                       asp-route-wordFilter="@ViewBag.WordFilter">Приоритет</a></th>
+                <th><a asp-action="Index" 
+                       asp-route-sortState="@ViewBag.StatusSort"
+                       asp-route-priority="@ViewBag.Priority"
+                       asp-route-status="@ViewBag.Status"
+                       asp-route-titleSearch="@ViewBag.TitleSearch"
+                       asp-route-dateFrom="@ViewBag.DateFrom"
+                       asp-route-dateTo="@ViewBag.DateTo"
+                       asp-route-wordFilter="@ViewBag.WordFilter">Статус</a></th>
+                <th><a asp-action="Index" 
+                       asp-route-sortState="@ViewBag.DateOfCreationSort"
+                       asp-route-priority="@ViewBag.Priority"
+                       asp-route-status="@ViewBag.Status"
+                       asp-route-titleSearch="@ViewBag.TitleSearch"
+                       asp-route-dateFrom="@ViewBag.DateFrom"
+                       asp-route-dateTo="@ViewBag.DateTo"
+                       asp-route-wordFilter="@ViewBag.WordFilter">Дата создания</a></th>
+                <th>Действия</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var task in @Model.Tasks)
+            {
+                <tr>
+                    <td>@task.Id</td>
+                    <td>@task.Name</td>
+                    <td class="@PriorityColor(@task.Priority)">@task.Priority</td>
+                    <td>@task.Status</td>
+                    <td>@task.DateOfCreation</td>
+                    <td>
+                        @if (task.Status == "Новая")
+                        {
+                            <a asp-controller="MyTask" asp-action="Open" asp-route-id="@task.Id" type="button" class="btn btn-success rounded-0 px-3 py-2 ">Открыть</a>
+                        }
+                        else if (task.Status == "Открыта")
+                        {
+                            <a asp-controller="MyTask" asp-action="Close" asp-route-id="@task.Id" type="button" class="btn btn-primary rounded-0 px-3 py-2 ">Закрыть</a>
+                        }
+                        <a asp-controller="MyTask" asp-action="MyTask" asp-route-id="@task.Id" type="button" class="btn btn-warning rounded-0 px-3 py-2 ">Детали</a>
+                        @if (task.Status != "Открыта")
+                        {
+                            <a asp-controller="MyTask" asp-action="Delete" asp-route-id="@task.Id" type="button" class="btn btn-danger rounded-0 px-3 py-2 ">Удалить</a>
+                        }
+                    </td>
+
+                </tr>
+            }
+            </tbody>
+        </table>
+        <div class="col-4 mx-auto text-center">
+            @if (Model.PageViewModel.HasPreviousPage)
+            { <a class="btn btn-primary me-4" asp-action="Index"
+                 asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+                 asp-route-sortState="@ViewBag.CurrentSort"
+                 asp-route-priority="@ViewBag.Priority"
+                 asp-route-status="@ViewBag.Status"
+                 asp-route-titleSearch="@ViewBag.TitleSearch"
+                 asp-route-dateFrom="@ViewBag.DateFrom"
+                 asp-route-dateTo="@ViewBag.DateTo"
+                 asp-route-wordFilter="@ViewBag.WordFilter"> Предыдущий </a> }
+            @if (Model.PageViewModel.HasNextPage)
+            { <a class="btn btn-primary ms-4" asp-action="Index"
+                 asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+                 asp-route-sortState="@ViewBag.CurrentSort"
+                 asp-route-priority="@ViewBag.Priority"
+                 asp-route-status="@ViewBag.Status"
+                 asp-route-titleSearch="@ViewBag.TitleSearch"
+                 asp-route-dateFrom="@ViewBag.DateFrom"
+                 asp-route-dateTo="@ViewBag.DateTo"
+                 asp-route-wordFilter="@ViewBag.WordFilter">Следующий</a> }
+        </div>
+    }
+</div>
+
+
+@functions{
+    public string PriorityColor(string priority)
+    {
+        switch (priority)
+        {
+            case "Высокий":
+                return "text-danger";
+            case "Средний":
+                return "text-primary";
+            case "Низкий":
+                return "text-success";
+            default:
+                return "";
+        }
+    }
+}
