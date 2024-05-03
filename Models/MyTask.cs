@@ -11,10 +11,14 @@ public class MyTask
     public string Priority { get; set; }
     public string Status { get; set; }
     [Required(ErrorMessage = "Заполните ячейку")]
-    public string ExecutorName { get; set; }
-    [Required(ErrorMessage = "Заполните ячейку")]
     public DateTime? DateOfCreation { get; set; }
     public DateTime? DateOfOpening { get; set; }
     public DateTime? DateOfClosing { get; set; }
+    [Required(ErrorMessage = "Заполните ячейку")]
     public string Description { get; set; }
+    
+    public int CreatorId { get; set; }
+    public User? Creator { get; set; }
+    public int? ExecutorId { get; set; }
+    public User? Executor { get; set; }
 }

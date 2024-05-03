@@ -1,0 +1,52 @@
+@model MyTask
+
+@{
+    ViewBag.Title = "EditMyTask";
+    Layout = "_Layout";
+}
+
+<h2>Редактирование</h2>
+
+<h2>Редактирование задачи</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit" asp-controller="MyTask" method="post">
+            <input asp-for="Id" type="hidden" />
+            <input asp-for="CreatorId" type="hidden" />
+            <input asp-for="Status" type="hidden" />
+            <input asp-for="ExecutorId" type="hidden" />
+            <input asp-for="DateOfClosing" type="hidden" />
+            <input asp-for="DateOfCreation" type="hidden" />
+            <input asp-for="DateOfOpening" type="hidden" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label">Наименование:</label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Priority">Приоритет<span class="text-danger ms-2" asp-validation-for="Priority"></span></label>
+                <select asp-for="Priority" name="Priority" class="form-select mt-3" id="Priority">
+                    <option selected disabled="disabled">Выберите приоритет</option>
+                    @foreach (var priority in ViewBag.Priorities)
+                    {
+                        <option value="@priority">@priority</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label">Описание:</label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Изменить</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+    
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

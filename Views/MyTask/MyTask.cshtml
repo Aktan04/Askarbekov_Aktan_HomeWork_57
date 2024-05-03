@@ -13,7 +13,11 @@
         <div class="col col-5">
             <div class="row row-cols-2">
                 <div class="col col-6 pb-5 border border-2">
-                    <h5 class="mt-4">Имя исполнителя</h5>
+                    <h5 class="mt-4">Имя создателя</h5>
+                    @if (Model.ExecutorId != null)
+                    {
+                        <h5 class="mt-4">Имя исполнителя</h5>
+                    }
                     <h5 class="mt-4">Статус</h5>
                     <h5 class="mt-4">Приоритет</h5>
                     <h5 class="mt-4">Номер</h5>
@@ -33,7 +37,11 @@
                     }
                 </div>
                 <div class="col col-6 pb-5 border border-2">
-                    <h5 class="mt-4">@Model.ExecutorName</h5>
+                    <h5 class="mt-4">@Model.Creator.UserName</h5>
+                    @if (Model.ExecutorId != null)
+                    {
+                        <h5 class="mt-4">@Model.Executor.UserName</h5>
+                    }
                     <h5 class="mt-4">@Model.Status</h5>
                     <h5 class="mt-4 @PriorityColor(@Model.Priority)">@Model.Priority</h5>
                     <h5 class="mt-4">@Model.Id</h5>
@@ -57,9 +65,11 @@
                     }
                 </div>
                 <div class="col col-12 py-5 border border-2">
-                    @if (Model.Status.Equals("Новая")) { <a asp-controller="MyTask" asp-action="Open" asp-route-id="@Model.Id" type="button" class="btn btn-success rounded-0 px-3 py-2 ">Открыть</a> }
-                    else if (Model.Status.Equals("Открыта")) { <a asp-controller="MyTask" asp-action="Close" asp-route-id="@Model.Id" type="button" class="btn btn-primary rounded-0 px-3 py-2 ">Закрыть</a> }
-                    @if(!Model.Status.Equals("Открыта")){ <a asp-controller="MyTask" asp-action="Delete" asp-route-id="@Model.Id" type="button" class="btn btn-danger rounded-0 px-3 py-2 ">Удалить</a> }
+                    @if (Model.Status.Equals("Новая") && Model.ExecutorId == ViewBag.UserId) { <a asp-controller="MyTask" asp-action="Open" asp-route-id="@Model.Id" type="button" class="btn btn-success rounded-0 px-3 py-2 ">Открыть</a> }
+                    else if (Model.Status.Equals("Открыта") && Model.ExecutorId == ViewBag.UserId) { <a asp-controller="MyTask" asp-action="Close" asp-route-id="@Model.Id" type="button" class="btn btn-primary rounded-0 px-3 py-2 ">Закрыть</a> }
+                    @if(!Model.Status.Equals("Открыта") && Model.CreatorId == ViewBag.UserId){ <a asp-controller="MyTask" asp-action="Delete" asp-route-id="@Model.Id" type="button" class="btn btn-danger rounded-0 px-3 py-2 ">Удалить</a> }
+                    @if(Model.CreatorId == ViewBag.UserId){ <a asp-controller="MyTask" asp-action="Edit" asp-route-id="@Model.Id" type="button" class="btn btn-danger rounded-0 px-3 py-2 ">Изменить</a> }
+                    @if(Model.CreatorId != ViewBag.UserId && Model.ExecutorId == null){ <a asp-controller="MyTask" asp-action="TakeTask" asp-route-id="@Model.Id" type="button" class="btn btn-danger rounded-0 px-3 py-2 ">Взять задачу</a> }
                 </div>
             </div>
         </div>

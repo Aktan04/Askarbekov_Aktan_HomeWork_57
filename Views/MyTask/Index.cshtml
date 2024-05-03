@@ -108,16 +108,17 @@
                     <td>@task.Status</td>
                     <td>@task.DateOfCreation</td>
                     <td>
-                        @if (task.Status == "Новая")
+                        @Html.ValidationSummary(true)
+                        @if (task.Status == "Новая" && task.ExecutorId == ViewBag.UserId)
                         {
                             <a asp-controller="MyTask" asp-action="Open" asp-route-id="@task.Id" type="button" class="btn btn-success rounded-0 px-3 py-2 ">Открыть</a>
                         }
-                        else if (task.Status == "Открыта")
+                        else if (task.Status == "Открыта" && task.ExecutorId == ViewBag.UserId)
                         {
                             <a asp-controller="MyTask" asp-action="Close" asp-route-id="@task.Id" type="button" class="btn btn-primary rounded-0 px-3 py-2 ">Закрыть</a>
                         }
                         <a asp-controller="MyTask" asp-action="MyTask" asp-route-id="@task.Id" type="button" class="btn btn-warning rounded-0 px-3 py-2 ">Детали</a>
-                        @if (task.Status != "Открыта")
+                        @if (task.Status != "Открыта" && task.CreatorId == ViewBag.UserId)
                         {
                             <a asp-controller="MyTask" asp-action="Delete" asp-route-id="@task.Id" type="button" class="btn btn-danger rounded-0 px-3 py-2 ">Удалить</a>
                         }

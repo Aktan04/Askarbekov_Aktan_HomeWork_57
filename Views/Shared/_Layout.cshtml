@@ -37,17 +37,17 @@
                              <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Регистрация</a>
                          </li>
                      }
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="MyTask" asp-action="Index">Все Задачи</a>
-                    </li>
                     @if (User.Identity.IsAuthenticated)
                     {
-                        if (User.IsInRole("admin"))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="MyTask" asp-action="Create">Добавить Задачу</a>
-                            </li>
-                        }
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="MyTask" asp-action="Index">Все Задачи</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="MyTask" asp-action="Create">Добавить Задачу</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="MyTask" asp-action="ExecutorTasks">Взятые задачи</a>
+                        </li>
                     }
                 </ul>
             </div>
