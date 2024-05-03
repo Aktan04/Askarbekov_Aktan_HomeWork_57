@@ -18,7 +18,6 @@
             <thead>
             <tr>
                 <th>Номер</th>
-                <th>Имя исполнителя</th>
                 <th>Название задачи</th>
                 <th>Приоритет</th>
                 <th>Статус</th>
@@ -30,7 +29,6 @@
             {
                 <tr>
                     <td>@task.Id</td>
-                    <td>@task.Executor.UserName</td>
                     <td>@task.Name</td>
                     <td class="@PriorityColor(@task.Priority)">@task.Priority</td>
                     <td>@task.Status</td>

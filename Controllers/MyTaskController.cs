@@ -302,11 +302,24 @@ public class MyTaskController : Controller
         return NotFound();
     }
         
-    public IActionResult ExecutorTasks(int id)
+    public IActionResult ExecutorTasks()
     {
-        return RedirectToAction("MyTask");
+        int userId = Convert.ToInt32(_userManager.GetUserId(User));
+        var tasks = _context.Tasks.Include(u => u.Executor).Where(t => t.ExecutorId == userId).ToList();
+        return View(tasks);
     }
-    
+    public IActionResult CreatorTasks()
+    {
+        int userId = Convert.ToInt32(_userManager.GetUserId(User));
+        var tasks = _context.Tasks.Include(u => u.Creator).Where(t => t.CreatorId == userId).ToList();
+        return View(tasks);
+    }
+    public IActionResult FreeTasks()
+    {
+        int userId = Convert.ToInt32(_userManager.GetUserId(User));
+        var tasks = _context.Tasks.Where(t => t.ExecutorId == null).ToList();
+        return View(tasks);
+    }
     private int SortFields(string field)
     {
         switch (field.ToLower())
