@@ -109,16 +109,16 @@
                     <td>@task.DateOfCreation</td>
                     <td>
                         @Html.ValidationSummary(true)
-                        @if (task.Status == "Новая" && task.ExecutorId == ViewBag.UserId)
+                        @if (task.Status == "Новая" && task.ExecutorId != null && (task.ExecutorId == ViewBag.UserId || User.IsInRole("admin")))
                         {
                             <a asp-controller="MyTask" asp-action="Open" asp-route-id="@task.Id" type="button" class="btn btn-success rounded-0 px-3 py-2 ">Открыть</a>
                         }
-                        else if (task.Status == "Открыта" && task.ExecutorId == ViewBag.UserId)
+                        @if (task.Status == "Открыта" && task.ExecutorId != null && (task.ExecutorId == ViewBag.UserId || User.IsInRole("admin")))
                         {
                             <a asp-controller="MyTask" asp-action="Close" asp-route-id="@task.Id" type="button" class="btn btn-primary rounded-0 px-3 py-2 ">Закрыть</a>
                         }
                         <a asp-controller="MyTask" asp-action="MyTask" asp-route-id="@task.Id" type="button" class="btn btn-warning rounded-0 px-3 py-2 ">Детали</a>
-                        @if (task.Status != "Открыта" && task.CreatorId == ViewBag.UserId)
+                        @if (task.Status != "Открыта" && (task.CreatorId == ViewBag.UserId || User.IsInRole("admin")))
                         {
                             <a asp-controller="MyTask" asp-action="Delete" asp-route-id="@task.Id" type="button" class="btn btn-danger rounded-0 px-3 py-2 ">Удалить</a>
                         }

@@ -1,5 +1,6 @@
 using Hw57.Models;
 using Hw57.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,7 @@ public class MyTaskController : Controller
         _userManager = userManager;
         _signInManager = signInManager;
     }
+    [Authorize]
     public async Task<IActionResult> Index(string? priority, string? status, string? titleSearch, DateTime? dateFrom, DateTime? dateTo, string? wordFilter,TaskSortState sortState = TaskSortState.NameAsc, int page = 1)
     {
         IQueryable<MyTask> filteredTasks = _context.Tasks;
@@ -135,7 +137,7 @@ public class MyTaskController : Controller
         }
         return View(tivm);
     }
-
+    [Authorize]
     public async Task<IActionResult> Create()
     {
         ViewBag.Priorities = new List<string>() {"Высокий", "Средний", "Низкий" };
@@ -144,14 +146,18 @@ public class MyTaskController : Controller
         ViewBag.User = user;
         return View();
     }
-
+    
     [HttpPost]
     public IActionResult Create(MyTask task)
     {
+        
         ViewBag.Priorities = new List<string>(){"Высокий", "Средний", "Низкий" };
-        if (_context.Tasks.Any(t => t.Name == task.Name) /*&& _context.Tasks.Any(t => t.ExecutorName == task.ExecutorName)*/)
+        int? userId = Convert.ToInt32(_userManager.GetUserId(User));
+        User user = _context.Users.FirstOrDefault(u => u.Id == userId);
+        ViewBag.User = user;
+        if (_context.Tasks.Any(t => t.Name == task.Name) && _context.Tasks.Any(t => t.ExecutorId == userId))
         {
-            ModelState.AddModelError("Name", "Задача с таким название уже существует!");
+            ModelState.AddModelError("", "Задача с таким название уже существует!");
             return View(task);
         }
         if (ModelState.IsValid)
@@ -163,7 +169,7 @@ public class MyTaskController : Controller
         }
         return View(task);
     }
-
+    [Authorize]
     public IActionResult MyTask(int id)
     {
         var tasks = _context.Tasks.Include(u => u.Creator).Include(u => u.Executor).ToList();
@@ -175,38 +181,42 @@ public class MyTaskController : Controller
         }
         return View(task);
     }
-
+    [Authorize]
     public IActionResult Open(int? id)
     {
         if (id != null)
         {
             MyTask task = _context.Tasks.FirstOrDefault(t => t.Id == id);
             int userId = Convert.ToInt32(_userManager.GetUserId(User));
-            if (task.Status == "Новая" && task.ExecutorId == userId)
+            if (task.Status == "Новая" && task.ExecutorId != null && (task.ExecutorId == userId || User.IsInRole("admin")))
             {
                 task.DateOfOpening = DateTime.UtcNow;
                 task.Status = "Открыта";
                 _context.SaveChanges();
+                return RedirectToAction("Index");
             }
         }
-        return RedirectToAction("Index");
+        return NotFound();
     }
-
+    [Authorize]
     public IActionResult Close(int? id)
     {
         if (id != null)
         {
             MyTask task = _context.Tasks.FirstOrDefault(t => t.Id == id);
             int userId = Convert.ToInt32(_userManager.GetUserId(User));
-            if (task.Status=="Открыта" && task.ExecutorId == userId)
+            if (task.Status=="Открыта" && task.ExecutorId != null && (task.ExecutorId == userId || User.IsInRole("admin")))
             {
                 task.DateOfClosing = DateTime.UtcNow;
                 task.Status = "Закрыта";
                 _context.SaveChanges();
+                return RedirectToAction("Index");
             }
         }
-        return RedirectToAction("Index");
+
+        return NotFound();
     }
+    [Authorize]
     [HttpGet]
     [ActionName("Delete")]
     public async Task<IActionResult> ConfirmDelete(int? id)
@@ -216,7 +226,7 @@ public class MyTaskController : Controller
             MyTask task = await _context.Tasks.FirstOrDefaultAsync(p => p.Id == id);
             string userId = _userManager.GetUserId(User);
             User user = await _userManager.FindByIdAsync(userId);
-            if (task != null && task.CreatorId == user.Id)
+            if (task != null && (task.CreatorId == user.Id || User.IsInRole("admin")))
             {
                 if (!task.Status.Equals("Открыта"))
                     return View(task);
@@ -240,14 +250,14 @@ public class MyTaskController : Controller
         }
         return NotFound();
     }
-
+    [Authorize]
     public IActionResult Edit(int? id)
     {
         if (id != null)
         {
             MyTask myTask = _context.Tasks.FirstOrDefault(p => p.Id == id);
             int userId = Convert.ToInt32(_userManager.GetUserId(User));
-            if (myTask != null && myTask.CreatorId == userId)
+            if (myTask != null && (myTask.CreatorId == userId || User.IsInRole("admin")))
             {
                 ViewBag.Priorities = new List<string>(){"Высокий", "Средний", "Низкий" };
                 ViewBag.UserId = userId;
@@ -283,14 +293,14 @@ public class MyTaskController : Controller
         }
         return View(myTask);
     }
-
+    [Authorize]
     public IActionResult TakeTask(int id)
     {
         int userId = Convert.ToInt32(_userManager.GetUserId(User));
         if (id != null)
         {
             var task = _context.Tasks.FirstOrDefault(t => t.Id == id);
-            if (task.CreatorId != userId && task.ExecutorId == null)
+            if (task.ExecutorId == null)
             {
                 task.ExecutorId = userId;
                 _context.Update(task);
@@ -301,19 +311,21 @@ public class MyTaskController : Controller
 
         return NotFound();
     }
-        
+    [Authorize]    
     public IActionResult ExecutorTasks()
     {
         int userId = Convert.ToInt32(_userManager.GetUserId(User));
         var tasks = _context.Tasks.Include(u => u.Executor).Where(t => t.ExecutorId == userId).ToList();
         return View(tasks);
     }
+    [Authorize]
     public IActionResult CreatorTasks()
     {
         int userId = Convert.ToInt32(_userManager.GetUserId(User));
         var tasks = _context.Tasks.Include(u => u.Creator).Where(t => t.CreatorId == userId).ToList();
         return View(tasks);
     }
+    [Authorize]
     public IActionResult FreeTasks()
     {
         int userId = Convert.ToInt32(_userManager.GetUserId(User));
