@@ -13,25 +13,25 @@
         <div class="col col-5">
             <div class="row row-cols-2">
                 <div class="col col-6 pb-5 border border-2">
-                    <h5 class="mt-4">Имя создателя</h5>
+                    <h5 class="mt-4">@Localizer["NameOfCreator"]</h5>
                     @if (Model.ExecutorId != null)
                     {
-                        <h5 class="mt-4">Имя исполнителя</h5>
+                        <h5 class="mt-4">@Localizer["NameOfExecutor"]</h5>
                     }
-                    <h5 class="mt-4">Статус</h5>
-                    <h5 class="mt-4">Приоритет</h5>
-                    <h5 class="mt-4">Номер</h5>
-                    <h5 class="mt-4">Дата создания</h5>
+                    <h5 class="mt-4">@Localizer["State"]</h5>
+                    <h5 class="mt-4">@Localizer["Priority"]</h5>
+                    <h5 class="mt-4">@Localizer["Number"]</h5>
+                    <h5 class="mt-4">@Localizer["DateOfCreation"]</h5>
                     @if (!Model.Status.Equals("Новая"))
                     {
-                        <h5 class="mt-4">Дата
+                        <h5 class="mt-4">@Localizer["Date"]
                             @if (Model.Status.Equals("Закрыта"))
                             {
-                                <span>закрытия</span>
+                                <span>@Localizer["DateOfClosin"]</span>
                             }
                             else if (Model.Status.Equals("Открыта"))
                             {
-                                <span>открытия</span>
+                                <span>@Localizer["DateOfOpening"]</span>
                             }
                         </h5>
                     }
@@ -65,16 +65,16 @@
                     }
                 </div>
                 <div class="col col-12 py-5 border border-2">
-                    @if (Model.Status.Equals("Новая") && Model.ExecutorId != null && (Model.ExecutorId == ViewBag.UserId || User.IsInRole("admin"))) { <a asp-controller="MyTask" asp-action="Open" asp-route-id="@Model.Id" type="button" class="btn btn-success rounded-0 px-3 py-2 ">Открыть</a> }
-                    @if (Model.Status.Equals("Открыта") && Model.ExecutorId != null && (Model.ExecutorId == ViewBag.UserId || User.IsInRole("admin"))) { <a asp-controller="MyTask" asp-action="Close" asp-route-id="@Model.Id" type="button" class="btn btn-primary rounded-0 px-3 py-2 ">Закрыть</a> }
-                    @if(!Model.Status.Equals("Открыта") && (Model.CreatorId == ViewBag.UserId || User.IsInRole("admin"))){ <a asp-controller="MyTask" asp-action="Delete" asp-route-id="@Model.Id" type="button" class="btn btn-danger rounded-0 px-3 py-2 ">Удалить</a> }
-                    @if(Model.CreatorId == ViewBag.UserId || User.IsInRole("admin")){ <a asp-controller="MyTask" asp-action="Edit" asp-route-id="@Model.Id" type="button" class="btn btn-danger rounded-0 px-3 py-2 ">Изменить</a> }
-                    @if(Model.ExecutorId == null){ <a asp-controller="MyTask" asp-action="TakeTask" asp-route-id="@Model.Id" type="button" class="btn btn-danger rounded-0 px-3 py-2 ">Взять задачу</a> }
+                    @if (Model.Status.Equals("Новая") && Model.ExecutorId != null && (Model.ExecutorId == ViewBag.UserId || User.IsInRole("admin"))) { <a asp-controller="MyTask" asp-action="Open" asp-route-id="@Model.Id" type="button" class="btn btn-success rounded-0 px-3 py-2 ">@Localizer["Open"]</a> }
+                    @if (Model.Status.Equals("Открыта") && Model.ExecutorId != null && (Model.ExecutorId == ViewBag.UserId || User.IsInRole("admin"))) { <a asp-controller="MyTask" asp-action="Close" asp-route-id="@Model.Id" type="button" class="btn btn-primary rounded-0 px-3 py-2 ">@Localizer["Close"]</a> }
+                    @if(!Model.Status.Equals("Открыта") && (Model.CreatorId == ViewBag.UserId || User.IsInRole("admin"))){ <a asp-controller="MyTask" asp-action="Delete" asp-route-id="@Model.Id" type="button" class="btn btn-danger rounded-0 px-3 py-2 ">@Localizer["Delete"]</a> }
+                    @if(Model.CreatorId == ViewBag.UserId || User.IsInRole("admin")){ <a asp-controller="MyTask" asp-action="Edit" asp-route-id="@Model.Id" type="button" class="btn btn-danger rounded-0 px-3 py-2 ">@Localizer["Edit"]</a> }
+                    @if(Model.ExecutorId == null){ <a asp-controller="MyTask" asp-action="TakeTask" asp-route-id="@Model.Id" type="button" class="btn btn-danger rounded-0 px-3 py-2 ">@Localizer["Take"]</a> }
                 </div>
             </div>
         </div>
         <div class="col col-7 pt-4 border border-2">
-            <h3 class="mt-1">Описание задачи</h3>
+            <h3 class="mt-1">@Localizer["Desc"]</h3>
             <p class="fs-2">@Model.Description</p>
         </div>
     </div>

@@ -329,7 +329,7 @@ public class MyTaskController : Controller
     public IActionResult FreeTasks()
     {
         int userId = Convert.ToInt32(_userManager.GetUserId(User));
-        var tasks = _context.Tasks.Where(t => t.ExecutorId == null).ToList();
+        var tasks = _context.Tasks.Where(t => t.ExecutorId == null && t.Status == "Новая").ToList();
         return View(tasks);
     }
     private int SortFields(string field)

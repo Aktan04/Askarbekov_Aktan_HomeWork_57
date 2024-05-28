@@ -28,6 +28,30 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>Create.en.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\MyTask\Delete.en.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Delete.en.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\MyTask\CreatorTasks.en.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>CreatorTasks.en.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\MyTask\ExecutorTasks.en.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>ExecutorTasks.en.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\MyTask\FreeTasks.en.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>FreeTasks.en.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\MyTask\Edit.en.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Edit.en.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\MyTask\MyTask.en.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>MyTask.en.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -45,6 +69,36 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>Create.en.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Views\MyTask\Delete.en.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Delete.en.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Views\MyTask\CreatorTasks.en.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>CreatorTasks.en.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Views\MyTask\ExecutorTasks.en.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>ExecutorTasks.en.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Views\MyTask\FreeTasks.en.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>FreeTasks.en.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Views\MyTask\Edit.en.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Edit.en.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Views\MyTask\MyTask.en.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>MyTask.en.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 

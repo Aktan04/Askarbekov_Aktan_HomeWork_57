@@ -5,23 +5,23 @@
     Layout = "_Layout";
 }
 
-<h2>Список взятых задач</h2>
+<h2>@Localizer["ListOfFreeTasks"]</h2>
 
 <div class="row table_section">
     @if (@Model.Count() == 0)
     {
-        <p>Пока что, задач еще нет!</p>
+        <p>@Localizer["LackOfTask"]</p>
     }
     else
     {
         <table class="table table-light table-striped">
             <thead>
             <tr>
-                <th>Номер</th>
-                <th>Название задачи</th>
-                <th>Приоритет</th>
-                <th>Статус</th>
-                <th>Дата создания</th>
+                <th>@Localizer["Number"]</th>
+                <th>@Localizer["NameOfTask"]</th>
+                <th>@Localizer["Priority"]</th>
+                <th>@Localizer["State"]</th>
+                <th>@Localizer["DateOfCreation"]</th>
             </tr>
             </thead>
             <tbody>

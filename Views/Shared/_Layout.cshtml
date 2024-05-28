@@ -12,7 +12,7 @@
 <header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
         <div class="container-fluid">
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Hw57</a>
+            <a class="navbar-brand" asp-area="" asp-controller="MyTask" asp-action="Index">Hw57</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -22,37 +22,37 @@
                      @if (User.Identity.IsAuthenticated)
                      {
                          <li class="nav-item">
-                             <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Выход</a>
+                             <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">@Localizer["Exit"]</a>
                          </li>
                          <li class="nav-item">
-                             <span class="nav-link text-dark">Привет, @User.Identity.Name!</span>
+                             <span class="nav-link text-dark">@Localizer["Hello"] @User.Identity.Name!</span>
                          </li>
                      }
                      else
                      {
                          <li class="nav-item">
-                             <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Вход</a>
+                             <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">@Localizer["Login"]</a>
                          </li>
                          <li class="nav-item">
-                             <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Регистрация</a>
+                             <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">@Localizer["Register"]</a>
                          </li>
                      }
                     @if (User.Identity.IsAuthenticated)
                     {
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="MyTask" asp-action="Index">Все Задачи</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="MyTask" asp-action="Index">@Localizer["AllTasks"]</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="MyTask" asp-action="Create">Добавить Задачу</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="MyTask" asp-action="Create">@Localizer["AddTask"]</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="MyTask" asp-action="ExecutorTasks">Взятые задачи</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="MyTask" asp-action="ExecutorTasks">@Localizer["TakenTasks"]</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="MyTask" asp-action="CreatorTasks">Созданные задачи</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="MyTask" asp-action="CreatorTasks">@Localizer["CreatedTasks"]</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="MyTask" asp-action="FreeTasks">Свободные задачи</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="MyTask" asp-action="FreeTasks">@Localizer["FreeTasks"]</a>
                         </li>
                     }
                 </ul>
@@ -65,12 +65,6 @@
         @RenderBody()
     </main>
 </div>
-
-<footer class="border-top footer text-muted">
-    <div class="container">
-        &copy; 2024 - Hw57 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-    </div>
-</footer>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
