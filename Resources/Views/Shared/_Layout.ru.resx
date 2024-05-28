@@ -1,0 +1,41 @@
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Hello" xml:space="preserve">
+        <value>Привет,</value>
+    </data>
+    <data name="AllTasks" xml:space="preserve">
+        <value>Все задачи</value>
+    </data>
+    <data name="TakenTasks" xml:space="preserve">
+        <value>Взятые задачи</value>
+    </data>
+    <data name="CreatedTasks" xml:space="preserve">
+        <value>Созданные задачи</value>
+    </data>
+    <data name="FreeTasks" xml:space="preserve">
+        <value>Свободные задачи</value>
+    </data>
+    <data name="AddTask" xml:space="preserve">
+        <value>Создать задачу</value>
+    </data>
+    <data name="Login" xml:space="preserve">
+        <value>Вход</value>
+    </data>
+    <data name="Exit" xml:space="preserve">
+        <value>Выход</value>
+    </data>
+    <data name="Register" xml:space="preserve">
+        <value>Регистрация</value>
+    </data>
+</root>

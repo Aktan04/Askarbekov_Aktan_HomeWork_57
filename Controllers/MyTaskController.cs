@@ -103,7 +103,7 @@ public class MyTaskController : Controller
                 tasks = tasks.OrderBy(t => t.Name).ToList();
                 break;
         }
-        int pageSize = 10;
+        int pageSize = 5;
         int count = tasks.Count();
         var items = tasks.Skip((page - 1) * pageSize).Take(pageSize);
         PageViewModel pvm = new PageViewModel(count, page, pageSize);

@@ -16,7 +16,36 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Recources\" />
+      <EmbeddedResource Update="Recources\Views\Shared\_Layout.en.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>_Layout.en.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\MyTask\Index.en.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Index.en.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\MyTask\Create.en.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Create.en.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Recources\Views\Shared\_Layout.en.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>_Layout.en.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Views\MyTask\Index.en.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Index.en.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Views\MyTask\Create.en.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Create.en.resx</DependentUpon>
+      </Compile>
     </ItemGroup>
 
 </Project>

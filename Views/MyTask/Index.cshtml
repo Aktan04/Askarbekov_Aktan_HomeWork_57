@@ -5,31 +5,31 @@
     Layout = "_Layout";
 }
 
-<h2>Список задач</h2>
+<h2>@Localizer["ListOfTasks"]</h2>
 
 <div class="row table_section">
     <form asp-action="Index" method="get" class="mb-4">
         <div class="row">
             <div class="col-md-3 mb-2">
-                <label for="titleSearch" class="form-label">Заголовок:</label>
-                <input type="text" id="titleSearch" name="titleSearch" class="form-control" placeholder="Поиск по заголовку">
+                <label for="titleSearch" class="form-label">@Localizer["Title"]:</label>
+                <input type="text" id="titleSearch" name="titleSearch" class="form-control" placeholder="@Localizer["SearchTitle"]">
             </div>
             <div class="col-md-3 mb-2">
-                <label for="dateFrom" class="form-label">Дата создания от:</label>
+                <label for="dateFrom" class="form-label">@Localizer["DateFrom"]:</label>
                 <input type="date" id="dateFrom" name="dateFrom" class="form-control">
             </div>
             <div class="col-md-3 mb-2">
-                <label for="dateTo" class="form-label">Дата создания до:</label>
+                <label for="dateTo" class="form-label">@Localizer["DateTo"]:</label>
                 <input type="date" id="dateTo" name="dateTo" class="form-control">
             </div>
             <div class="col-md-3 mb-2">
-                <label for="wordFilter" class="form-label">Фильтр по словам:</label>
-                <input type="text" id="wordFilter" name="wordFilter" class="form-control" placeholder="Поиск по описанию">
+                <label for="wordFilter" class="form-label">@Localizer["FilterByDesc"]:</label>
+                <input type="text" id="wordFilter" name="wordFilter" class="form-control" placeholder="@Localizer["SearchDesc"]">
             </div>
             <div class="col-md-4 mb-2">
-                <label for="priority" class="form-label">Приоритет</label>
+                <label for="priority" class="form-label">@Localizer["Priority"]</label>
                 <select id="priority" name="priority" class="form-select">
-                    <option value="">Все приоритеты</option>
+                    <option value="">@Localizer["AllPriorities"]</option>
                     @foreach (var priority in ViewBag.Priorities)
                     {
                         <option value="@priority">@priority</option>
@@ -38,9 +38,9 @@
             </div>
             
             <div class="col-md-4 mb-2">
-                <label for="status" class="form-label">Статус</label>
+                <label for="status" class="form-label">@Localizer["State"]</label>
                 <select id="status" name="status" class="form-select">
-                    <option value="">Все статусы</option>
+                    <option value="">@Localizer["AllStates"]</option>
                     @foreach (var statuses in ViewBag.Statuses)
                     {
                         <option value="@statuses">@statuses</option>
@@ -49,13 +49,13 @@
             </div>
             
             <div class="col-md-3 d-flex align-items-end">
-                <button type="submit" class="btn btn-primary my-2">Применить фильтр</button>
+                <button type="submit" class="btn btn-primary my-2">@Localizer["ApplyFilter"]</button>
             </div>
         </div>
     </form>
     @if (@Model.Tasks.Count() == 0)
     {
-        <p>Пока что, задач еще нет!</p>
+        <p>@Localizer["LackOfTasks"]</p>
     }
     else
     {
@@ -70,7 +70,7 @@
                        asp-route-titleSearch="@ViewBag.TitleSearch"
                        asp-route-dateFrom="@ViewBag.DateFrom"
                        asp-route-dateTo="@ViewBag.DateTo"
-                       asp-route-wordFilter="@ViewBag.WordFilter">Название задачи</a></th>
+                       asp-route-wordFilter="@ViewBag.WordFilter">@Localizer["Title"]</a></th>
                 <th><a asp-action="Index" 
                        asp-route-sortState="@ViewBag.PrioritySort"
                        asp-route-priority="@ViewBag.Priority"
@@ -78,7 +78,7 @@
                        asp-route-titleSearch="@ViewBag.TitleSearch"
                        asp-route-dateFrom="@ViewBag.DateFrom"
                        asp-route-dateTo="@ViewBag.DateTo"
-                       asp-route-wordFilter="@ViewBag.WordFilter">Приоритет</a></th>
+                       asp-route-wordFilter="@ViewBag.WordFilter">@Localizer["Priority"]</a></th>
                 <th><a asp-action="Index" 
                        asp-route-sortState="@ViewBag.StatusSort"
                        asp-route-priority="@ViewBag.Priority"
@@ -86,7 +86,7 @@
                        asp-route-titleSearch="@ViewBag.TitleSearch"
                        asp-route-dateFrom="@ViewBag.DateFrom"
                        asp-route-dateTo="@ViewBag.DateTo"
-                       asp-route-wordFilter="@ViewBag.WordFilter">Статус</a></th>
+                       asp-route-wordFilter="@ViewBag.WordFilter">@Localizer["State"]</a></th>
                 <th><a asp-action="Index" 
                        asp-route-sortState="@ViewBag.DateOfCreationSort"
                        asp-route-priority="@ViewBag.Priority"
@@ -94,7 +94,7 @@
                        asp-route-titleSearch="@ViewBag.TitleSearch"
                        asp-route-dateFrom="@ViewBag.DateFrom"
                        asp-route-dateTo="@ViewBag.DateTo"
-                       asp-route-wordFilter="@ViewBag.WordFilter">Дата создания</a></th>
+                       asp-route-wordFilter="@ViewBag.WordFilter">@Localizer["DateOfCreation"]</a></th>
                 <th>Действия</th>
             </tr>
             </thead>
@@ -111,16 +111,16 @@
                         @Html.ValidationSummary(true)
                         @if (task.Status == "Новая" && task.ExecutorId != null && (task.ExecutorId == ViewBag.UserId || User.IsInRole("admin")))
                         {
-                            <a asp-controller="MyTask" asp-action="Open" asp-route-id="@task.Id" type="button" class="btn btn-success rounded-0 px-3 py-2 ">Открыть</a>
+                            <a asp-controller="MyTask" asp-action="Open" asp-route-id="@task.Id" type="button" class="btn btn-success rounded-0 px-3 py-2 ">@Localizer["Open"]</a>
                         }
                         @if (task.Status == "Открыта" && task.ExecutorId != null && (task.ExecutorId == ViewBag.UserId || User.IsInRole("admin")))
                         {
-                            <a asp-controller="MyTask" asp-action="Close" asp-route-id="@task.Id" type="button" class="btn btn-primary rounded-0 px-3 py-2 ">Закрыть</a>
+                            <a asp-controller="MyTask" asp-action="Close" asp-route-id="@task.Id" type="button" class="btn btn-primary rounded-0 px-3 py-2 ">@Localizer["Close"]</a>
                         }
-                        <a asp-controller="MyTask" asp-action="MyTask" asp-route-id="@task.Id" type="button" class="btn btn-warning rounded-0 px-3 py-2 ">Детали</a>
+                        <a asp-controller="MyTask" asp-action="MyTask" asp-route-id="@task.Id" type="button" class="btn btn-warning rounded-0 px-3 py-2 ">@Localizer["Detail"]</a>
                         @if (task.Status != "Открыта" && (task.CreatorId == ViewBag.UserId || User.IsInRole("admin")))
                         {
-                            <a asp-controller="MyTask" asp-action="Delete" asp-route-id="@task.Id" type="button" class="btn btn-danger rounded-0 px-3 py-2 ">Удалить</a>
+                            <a asp-controller="MyTask" asp-action="Delete" asp-route-id="@task.Id" type="button" class="btn btn-danger rounded-0 px-3 py-2 ">@Localizer["Delete"]</a>
                         }
                     </td>
 
@@ -138,7 +138,7 @@
                  asp-route-titleSearch="@ViewBag.TitleSearch"
                  asp-route-dateFrom="@ViewBag.DateFrom"
                  asp-route-dateTo="@ViewBag.DateTo"
-                 asp-route-wordFilter="@ViewBag.WordFilter"> Предыдущий </a> }
+                 asp-route-wordFilter="@ViewBag.WordFilter">@Localizer["Previous"]</a> }
             @if (Model.PageViewModel.HasNextPage)
             { <a class="btn btn-primary ms-4" asp-action="Index"
                  asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
@@ -148,7 +148,7 @@
                  asp-route-titleSearch="@ViewBag.TitleSearch"
                  asp-route-dateFrom="@ViewBag.DateFrom"
                  asp-route-dateTo="@ViewBag.DateTo"
-                 asp-route-wordFilter="@ViewBag.WordFilter">Следующий</a> }
+                 asp-route-wordFilter="@ViewBag.WordFilter">@Localizer["Next"]</a> }
         </div>
     }
 </div>
