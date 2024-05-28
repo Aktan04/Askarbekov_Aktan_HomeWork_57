@@ -1,12 +1,15 @@
+using System.Globalization;
 using Hw57.Models;
 using Hw57.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 builder.Services.AddControllersWithViews();
 string connection = builder.Configuration.GetConnectionString("DefaultConnection");
 
@@ -44,6 +47,17 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+var supportedCultures = new[]
+{
+    new CultureInfo("en"),
+    new CultureInfo("ru"),
+};
+app.UseRequestLocalization(new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture("ru"),
+    SupportedCultures = supportedCultures,
+    SupportedUICultures = supportedCultures
+});
 app.UseStaticFiles();
 
 app.UseRouting();
