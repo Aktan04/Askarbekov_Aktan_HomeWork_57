@@ -1,9 +1,11 @@
 using System.Globalization;
+using System.IO.Compression;
 using Hw57.Models;
 using Hw57.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,8 +28,13 @@ builder.Services.AddDbContext<MyTaskContext>(options => options.UseNpgsql(connec
     .AddEntityFrameworkStores<MyTaskContext>();
 builder.Services.AddTransient<TaskService>();
 builder.Services.AddMemoryCache();
-
+builder.Services.AddResponseCompression(options => options.EnableForHttps = true);
+builder.Services.Configure<BrotliCompressionProviderOptions>(options =>
+{
+    options.Level = CompressionLevel.Optimal;
+});
 var app = builder.Build();
+app.UseResponseCompression();
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
 try
