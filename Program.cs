@@ -10,9 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
-builder.Services.AddControllersWithViews()
-
-    .AddViewLocalization();
+builder.Services.AddControllersWithViews().AddViewLocalization();
 builder.Services.AddControllersWithViews();
 string connection = builder.Configuration.GetConnectionString("DefaultConnection");
 
@@ -26,6 +24,8 @@ builder.Services.AddDbContext<MyTaskContext>(options => options.UseNpgsql(connec
         options.Password.RequireDigit = false; // требуются ли цифры
     })
     .AddEntityFrameworkStores<MyTaskContext>();
+builder.Services.AddTransient<TaskService>();
+builder.Services.AddMemoryCache();
 
 var app = builder.Build();
 using var scope = app.Services.CreateScope();

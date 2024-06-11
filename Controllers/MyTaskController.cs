@@ -11,13 +11,15 @@ public class MyTaskController : Controller
 {
     public MyTaskContext _context;
     private readonly UserManager<User> _userManager;
+    public TaskService _service;
     private readonly SignInManager<User> _signInManager;
 
-    public MyTaskController(MyTaskContext context, UserManager<User> userManager, SignInManager<User> signInManager)
+    public MyTaskController(MyTaskContext context, UserManager<User> userManager, SignInManager<User> signInManager, TaskService service)
     {
         _context = context;
         _userManager = userManager;
         _signInManager = signInManager;
+        _service = service;
     }
     [Authorize]
     public async Task<IActionResult> Index(string? priority, string? status, string? titleSearch, DateTime? dateFrom, DateTime? dateTo, string? wordFilter,TaskSortState sortState = TaskSortState.NameAsc, int page = 1)
@@ -148,14 +150,14 @@ public class MyTaskController : Controller
     }
     
     [HttpPost]
-    public IActionResult Create(MyTask task)
+    public async Task<IActionResult> Create(MyTask task)
     {
         
         ViewBag.Priorities = new List<string>(){"Высокий", "Средний", "Низкий" };
         int? userId = Convert.ToInt32(_userManager.GetUserId(User));
-        User user = _context.Users.FirstOrDefault(u => u.Id == userId);
+        User? user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
         ViewBag.User = user;
-        if (_context.Tasks.Any(t => t.Name == task.Name) && _context.Tasks.Any(t => t.ExecutorId == userId))
+        if (await _context.Tasks.AnyAsync(t => t.Name == task.Name) && _context.Tasks.Any(t => t.ExecutorId == userId))
         {
             ModelState.AddModelError("", "Задача с таким название уже существует!");
             return View(task);
@@ -163,17 +165,20 @@ public class MyTaskController : Controller
         if (ModelState.IsValid)
         {
             task.DateOfCreation = DateTime.Now.ToUniversalTime();
-            _context.Tasks.Add(task);
-            _context.SaveChanges();
+            await _service.AddTask(task);
+            await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
         return View(task);
     }
     [Authorize]
-    public IActionResult MyTask(int id)
+    public async Task<IActionResult> MyTask(int id)
     {
-        var tasks = _context.Tasks.Include(u => u.Creator).Include(u => u.Executor).ToList();
-        var task = tasks.FirstOrDefault(t => t.Id == id);
+        var task = await _service.GetTask(id);
+        if (task == null)
+        {
+            return NotFound();
+        }
         int? userId = Convert.ToInt32(_userManager.GetUserId(User));
         if (userId != null)
         {
@@ -243,9 +248,7 @@ public class MyTaskController : Controller
     {
         if (id != null)
         {
-            MyTask task = new MyTask() { Id = id.Value };
-            _context.Entry(task).State = EntityState.Deleted;
-            await _context.SaveChangesAsync();
+            await _service.RemoveTask(id);
             return RedirectToAction("Index");
         }
         return NotFound();
