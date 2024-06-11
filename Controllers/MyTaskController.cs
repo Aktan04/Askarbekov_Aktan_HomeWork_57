@@ -172,6 +172,7 @@ public class MyTaskController : Controller
         return View(task);
     }
     [Authorize]
+    [ResponseCache(Duration = 120, Location = ResponseCacheLocation.Any)]
     public async Task<IActionResult> MyTask(int id)
     {
         var task = await _service.GetTask(id);
@@ -224,6 +225,7 @@ public class MyTaskController : Controller
     [Authorize]
     [HttpGet]
     [ActionName("Delete")]
+    [ResponseCache(Duration = 200, Location = ResponseCacheLocation.Any)]
     public async Task<IActionResult> ConfirmDelete(int? id)
     {
         if (id != null)
